@@ -13,7 +13,7 @@ resource "null_resource" "dependency_getter" {
 
 resource "helm_release" "osba" {
   depends_on = ["null_resource.dependency_getter"]
-  name = "isba"
+  name = "osba"
   repository = "${var.helm_repository}"
   chart = "open-service-broker-azure"
   version = "${var.chart_version}"
