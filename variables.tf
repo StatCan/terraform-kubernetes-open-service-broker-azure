@@ -3,6 +3,9 @@ variable "helm_namespace" {}
 
 variable "helm_repository" {}
 
+variable "helm_repository_service_catalog" {}
+
+
 variable "chart_version" {}
 
 variable "dependencies" {

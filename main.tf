@@ -11,8 +11,17 @@ resource "null_resource" "dependency_getter" {
   }
 }
 
-resource "helm_release" "osba" {
+resource "helm_release" "service_catalog" {
   depends_on = ["null_resource.dependency_getter"]
+  name = "service-catalog"
+  repository = "${var.helm_repository_service_catalog}"
+  chart = "service-catalog"
+  version = "${var.chart_version}"
+  namespace = "${var.helm_namespace}"
+}
+
+resource "helm_release" "osba" {
+  depends_on = ["helm_release.service_catalog", "null_resource.dependency_getter"]
   name = "osba"
   repository = "${var.helm_repository}"
   chart = "open-service-broker-azure"
@@ -31,6 +40,7 @@ resource "null_resource" "dependency_setter" {
   # https://github.com/hashicorp/terraform/issues/1178#issuecomment-449158607
   # List resource(s) that will be constructed last within the module.
   depends_on = [
+    "helm_release.service_catalog",
     "helm_release.osba",
   ]
 }
