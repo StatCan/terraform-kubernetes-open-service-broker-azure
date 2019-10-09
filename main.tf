@@ -15,7 +15,7 @@ resource "helm_release" "service_catalog" {
   depends_on = ["null_resource.dependency_getter"]
   name = "service-catalog"
   repository = "${var.helm_repository_service_catalog}"
-  chart = "service-catalog"
+  chart = "catalog"
   version = "${var.chart_version_service_catalog}"
   namespace = "${var.helm_namespace}"
 }
