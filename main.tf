@@ -18,6 +18,11 @@ resource "helm_release" "service_catalog" {
   chart = "catalog"
   version = "${var.chart_version_service_catalog}"
   namespace = "${var.helm_namespace}"
+
+  set {
+    name = "webhook.service.type"
+    value = "ClusterIP"
+  }
 }
 
 resource "helm_release" "osba" {
