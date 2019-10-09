@@ -16,7 +16,7 @@ resource "helm_release" "service_catalog" {
   name = "service-catalog"
   repository = "${var.helm_repository_service_catalog}"
   chart = "service-catalog"
-  version = "${var.chart_version}"
+  version = "${var.chart_version_service_catalog}"
   namespace = "${var.helm_namespace}"
 }
 
