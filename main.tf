@@ -9,29 +9,35 @@ resource "null_resource" "dependency_getter" {
   triggers = {
     my_dependencies = "${join(",", var.dependencies)}"
   }
+
+  lifecycle {
+    ignore_changes = [
+      triggers["my_dependencies"],
+    ]
+  }
 }
 
 resource "helm_release" "service_catalog" {
   depends_on = ["null_resource.dependency_getter"]
-  name = "service-catalog"
+  name       = "service-catalog"
   repository = "${var.helm_repository_service_catalog}"
-  chart = "catalog"
-  version = "${var.chart_version_service_catalog}"
-  namespace = "${var.helm_namespace}"
+  chart      = "catalog"
+  version    = "${var.chart_version_service_catalog}"
+  namespace  = "${var.helm_namespace}"
 
   set {
-    name = "webhook.service.type"
+    name  = "webhook.service.type"
     value = "ClusterIP"
   }
 }
 
 resource "helm_release" "osba" {
   depends_on = ["helm_release.service_catalog", "null_resource.dependency_getter"]
-  name = "osba"
+  name       = "osba"
   repository = "${var.helm_repository}"
-  chart = "open-service-broker-azure"
-  version = "${var.chart_version}"
-  namespace = "${var.helm_namespace}"
+  chart      = "open-service-broker-azure"
+  version    = "${var.chart_version}"
+  namespace  = "${var.helm_namespace}"
 
   values = [
     "${var.values}",
