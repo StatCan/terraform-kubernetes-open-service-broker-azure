@@ -29,7 +29,6 @@ module "helm_open_service_broker_azure" {
     "${module.namespace_osba.depended_on}",
   ]
 
-  helm_service_account = "tiller"
   helm_namespace = "${module.namespace_osba.depended_on}"
   helm_repository = "azure"
 
